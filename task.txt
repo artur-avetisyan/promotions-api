@@ -1,0 +1,46 @@
+// Solely for example app. Contains answers for additional questions.
+
+Storage problem
+
+We receive some records in a CSV file (example promotions.csv attached) every 30
+minutes. We would like to store these objects in a way to be accessed by an endpoint.
+Given an ID the endpoint should return the object, otherwise, return not found.
+Eg:
+curl https://localhost:1321/promotions/1
+{"id":"172FFC14-D229-4C93-B06B-F48B8C095512", "price":9.68,
+"expiration_date": "2022-06-04 06:01:20"}
+
+Additionally, consider:
+● The .csv file could be very big (billions of entries) - how would your application
+perform?
+
+[A] Since the CSV file can be very large, we need a database system that can handle large amounts of data efficiently.
+ I selected a PostgreSQL which is capable of handling billions of entries and provide good read performance.
+ Each time a new file is received, we can truncate the existing table and insert the new records.
+ Otherwise, f.e. we can choose MySQL (for relational) or MongoDB (if we want to choose no-sql).
+
+● Every new file is immutable, that is, you should erase and write the whole storage;
+
+[A] As mentioned above, each time a new file is received, we can truncate the existing table and insert the new records.
+
+● How would your application perform in peak periods (millions of requests per minute)?
+
+[A] To handle peak periods with millions of requests per minute, we can
+ - Implement caching mechanisms to store frequently accessed records in memory.
+ - Use load balancing techniques and distribute the incoming requests (traffic) across multiple instances
+  of application (horizontal scaling: reverse proxy, such as Nginx can be used).
+
+● How would you operate this app in production (e.g. deployment, scaling, monitoring)?
+
+[A]
+ - Containerize the application using Docker to ensure portability and easier deployment.
+ - Use an orchestration tool like Kubernetes to manage the deployment, scaling, and monitoring of the application.
+ - Configure health checks and monitoring systems to detect and handle any issues proactively.
+ - Monitor resource utilization, database performance, and request latency to optimize and scale the application as needed.
+   Monitoring tools like Prometheus and Grafana can be used to collect and visualize application metrics,
+   such as request rate, latency, and resource utilization.
+
+● The application should be written in golang;
+ [A] Done.
+● Main deliverable is the code for the app including usage instructions, ideally in a repo/github gist.
+ [A] Done.
